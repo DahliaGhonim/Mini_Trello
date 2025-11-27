@@ -1,9 +1,15 @@
 class CardsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_card, only: %i[ show edit update destroy ]
 
   # GET /cards or /cards.json
   def index
-    @cards = Card.all
+    if params[:list_id]
+      @list = List.find(params.expect(:list_id))
+      @cards = @list.cards.all
+    else
+      @card = current_user.cards.new
+    end
   end
 
   # GET /cards/1 or /cards/1.json
@@ -12,7 +18,12 @@ class CardsController < ApplicationController
 
   # GET /cards/new
   def new
-    @card = Card.new
+    if params[:list_id]
+      @list = List.find(params.expect(:list_id))
+      @card = @list.cards.new(user: current_user)
+    else
+      @card = current_user.cards.new
+    end
   end
 
   # GET /cards/1/edit
@@ -21,11 +32,16 @@ class CardsController < ApplicationController
 
   # POST /cards or /cards.json
   def create
-    @card = Card.new(card_params)
+    if params[:list_id]
+      @list = List.find(params.expect(:list_id))
+      @card = @list.cards.new(card_params.merge(user: current_user))
+    else
+      @card = current_user.cards.new(card_params)
+    end
 
     respond_to do |format|
       if @card.save
-        format.html { redirect_to @card, notice: "Card was successfully created." }
+        format.html { redirect_to @list.board, notice: "Card was successfully created." }
         format.json { render :show, status: :created, location: @card }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -60,11 +76,11 @@ class CardsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_card
-      @card = Card.find(params.expect(:id))
+      @card = current_user.cards.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def card_params
-      params.expect(card: [ :list_id, :title ])
+      params.require(:card).permit(:title, :user_id, :list_id)
     end
 end

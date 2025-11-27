@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-  resources :cards
   devise_for :users
+  resources :cards
   resources :boards do
-    resources :lists
+    resources :lists do
+      resources :cards
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

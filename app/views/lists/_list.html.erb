@@ -1,9 +1,13 @@
-<div id="<%= dom_id list %>" class="flex-shrink-0 w-80 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
+<div id="<%= dom_id list %>" class="shrink-0 w-80 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
   <div class="p-4">
     <h3 class="font-semibold text-gray-800 text-lg mb-4"><%= list.name %></h3>
 
+    <div class="space-y-3">
+      <%= render list.cards %>
+    </div>
+
     <div class="mt-4">
-      <%= link_to "+ Add a card", "#",
+      <%= link_to "+ Add a card", new_board_list_card_path(list.board, list),
         class: "text-gray-600 hover:text-gray-800 text-sm hover:bg-gray-100 rounded px-2 py-1 -ml-2" %>
     </div>
 
