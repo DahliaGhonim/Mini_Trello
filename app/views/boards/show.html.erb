@@ -1,9 +1,28 @@
 <%= render 'boards/navbar', board: @board %>
-<% content_for :title, "Showing board" %>
 
-<div class="md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="font-bold">
+  <div class="h-screen overflow-hidden bg-gray-100">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" 
+            id="notice"><%= notice %></p>
+    <% end %>
+    <div class="h-full overflow-x-auto overflow-y-hidden">
+      <div class="inline-flex items-start gap-6 p-8 min-w-max h-full">
 
+        <div id="lists" class="flex gap-6 p-8 pt-4">
+          <%= render @board.lists %>
+        </div>
+
+        <div class="pt-4">
+          <div class="shrink-0 w-80 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
+            <div class="p-4">
+              <%= link_to "Add a list", new_board_list_path(@board),
+                    class: "font-semibold text-gray-800 text-lg mb-4" %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>
