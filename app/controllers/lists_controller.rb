@@ -1,9 +1,10 @@
 class ListsController < ApplicationController
-  before_action :set_list, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
+  before_action :set_board, only: %i[ index new create ]
 
   # GET /lists or /lists.json
   def index
-    @lists = List.all
+    @lists = @board.lists.all
   end
 
   # GET /lists/1 or /lists/1.json
@@ -12,7 +13,7 @@ class ListsController < ApplicationController
 
   # GET /lists/new
   def new
-    @list = List.new
+    @list = @board.lists.new
   end
 
   # GET /lists/1/edit
@@ -21,11 +22,11 @@ class ListsController < ApplicationController
 
   # POST /lists or /lists.json
   def create
-    @list = List.new(list_params)
+    @list = @board.lists.new(list_params)
 
     respond_to do |format|
       if @list.save
-        format.html { redirect_to @list, notice: "List was successfully created." }
+        format.html { redirect_to @board, notice: "List was successfully created." }
         format.json { render :show, status: :created, location: @list }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -59,8 +60,8 @@ class ListsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_list
-      @list = List.find(params.expect(:id))
+    def set_board
+      @board = Board.find(params.expect(:board_id))
     end
 
     # Only allow a list of trusted parameters through.
