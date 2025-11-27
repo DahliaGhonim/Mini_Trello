@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :cards
   devise_for :users
   resources :boards do
     resources :lists
