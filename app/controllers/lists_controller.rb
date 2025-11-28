@@ -1,6 +1,7 @@
 class ListsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_board, only: %i[ index new create ]
+  before_action :set_list, only: %i[show edit update destroy]
+  before_action :set_board, only: %i[ index new create destroy ]
 
   # GET /lists or /lists.json
   def index
@@ -53,13 +54,17 @@ class ListsController < ApplicationController
     @list.destroy!
 
     respond_to do |format|
-      format.html { redirect_to lists_path, notice: "List was successfully destroyed.", status: :see_other }
+      format.html { redirect_to board_path(@board), notice: "List was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_list
+      @list = List.find(params.expect(:id))
+    end
+
     def set_board
       @board = Board.find(params.expect(:board_id))
     end
