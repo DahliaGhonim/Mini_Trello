@@ -3,9 +3,10 @@
 
   <!-- List header: name + trash icon on hover -->
   <div class="flex items-center justify-between p-4 pb-2">
-    <h3 class="font-semibold text-gray-800 text-lg flex-1 pr-2">
-      <%= list.name %>
-    </h3>
+    <%= turbo_frame_tag "list" do %>
+      <%= link_to list.name, edit_board_list_path(list.board, list),
+          class: "font-semibold text-gray-800 text-lg flex-1 pr-2" %>
+    <% end %>
 
     <!-- Trash icon: appears on hover -->
     <%= button_to board_list_path(list.board, list),
