@@ -1,22 +1,22 @@
 <%= form_with(model: [card.list.board, card.list, card], class: "contents") do |form| %>
   <% if card.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(card.errors.count, "error") %> prohibited this card from being saved:</h2>
-
-      <ul class="list-disc ml-6">
-        <% card.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="bg-red-50 text-red-500 px-3 py-2 rounded-md text-sm font-medium mt-2">
+      <%= pluralize(card.errors.count, "error") %> prohibited this card from being saved:
+      <ul class="list-disc ml-5 mt-1 text-sm">
+        <% card.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": card.errors[:title].none?, "border-red-400 focus:outline-red-600": card.errors[:title].any?}] %>
-  </div>
+  <div class="flex items-start gap-2 mt-2">
+    <%= form.text_field :title,
+          placeholder: "Enter card title...",
+          class: "flex-1 min-w-0 block w-full rounded-md border px-3 py-1.5 text-sm
+                  focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                  #{card.errors[:title].any? ? 'border-red-400' : 'border-gray-300'}" %>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit class: "px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-md transition shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1" %>
   </div>
 <% end %>
