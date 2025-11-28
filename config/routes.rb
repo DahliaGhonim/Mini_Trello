@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   resources :cards
   resources :boards do
     resources :lists do
-      resources :cards
+      resources :cards do
+        member do
+          patch :toggle_done
+        end
+      end
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

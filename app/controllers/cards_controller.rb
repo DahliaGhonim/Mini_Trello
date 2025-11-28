@@ -63,6 +63,13 @@ class CardsController < ApplicationController
     end
   end
 
+  def toggle_done
+    @list = List.find(params.expect(:list_id))
+    @card = @list.cards.find(params[:id])
+    @card.update(done: !@card.done)
+    redirect_to @list.board
+  end
+
   # DELETE /cards/1 or /cards/1.json
   def destroy
     @card.destroy!
