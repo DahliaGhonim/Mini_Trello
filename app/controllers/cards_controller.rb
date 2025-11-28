@@ -1,6 +1,6 @@
 class CardsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_card, only: %i[ show edit update destroy ]
+  before_action :set_card, only: %i[ show edit update toggle_done destroy ]
 
   # GET /cards or /cards.json
   def index
@@ -65,17 +65,17 @@ class CardsController < ApplicationController
 
   def toggle_done
     @list = List.find(params.expect(:list_id))
-    @card = @list.cards.find(params[:id])
     @card.update(done: !@card.done)
     redirect_to @list.board
   end
 
   # DELETE /cards/1 or /cards/1.json
   def destroy
+    @list = List.find(params.expect(:list_id))
     @card.destroy!
 
     respond_to do |format|
-      format.html { redirect_to cards_path, notice: "Card was successfully destroyed.", status: :see_other }
+      format.html { redirect_to @list.board, notice: "Card was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end

@@ -1,19 +1,33 @@
-<div id="<%= dom_id card %>" class="group">
-
-  <div class="flex items-start gap-3">
-    <%= form_with model: card, url: toggle_done_board_list_card_path(card.list.board, card.list, card),
-                  method: :patch, data: { turbo: true } do |f| %>
+<div id="<%= dom_id card %>" class="group rounded-lg bg-white p-3 shadow-sm hover:shadow transition-shadow">
+  <div class="flex items-center gap-3">
+    <!-- Checkbox: toggle done -->
+    <%= form_with model: card,
+                  url: toggle_done_board_list_card_path(card.list.board, card.list, card),
+                  method: :patch,
+                  data: { turbo: true } do |f| %>
       <%= f.check_box :done,
             checked: card.done,
-            class: "peer h-5 w-5 cursor-pointer rounded border-gray-300 text-stone-800
+            class: "h-5 w-5 cursor-pointer rounded border-gray-300 text-stone-800
                     focus:ring-2 focus:ring-stone-800 focus:ring-offset-0
                     checked:bg-stone-800 checked:border-stone-800",
             onclick: "this.form.requestSubmit()" %>
     <% end %>
 
-    <span class="text-sm text-stone-800 font-medium select-none">
+    <span class="flex-1 text-sm font-medium text-stone-800 hover:underline">
       <%= card.title %>
     </span>
-  </div>
 
+    <!-- Trash icon: appears on hover, deletes card -->
+    <%= button_to board_list_card_path(card.list.board, card.list, card),
+          method: :delete,
+          data: { turbo_confirm: "Delete this card?" },
+          class: "opacity-0 group-hover:opacity-100 transition-opacity
+                  p-1.5 rounded hover:bg-red-50 text-red-600
+                  focus:outline-none focus:ring-2 focus:ring-red-500" do %>
+      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+      </svg>
+    <% end %>
+  </div>
 </div>
