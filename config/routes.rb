@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :cards
+
   resources :boards do
     resources :lists do
       resources :cards do
         member do
           patch :toggle_done
+          patch :move
         end
       end
     end

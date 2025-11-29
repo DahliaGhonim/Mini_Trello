@@ -1,7 +1,7 @@
 class CardsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_owner, only: %i[ index new create ]
-  before_action :set_card, only: %i[ show edit update toggle_done destroy ]
+  before_action :set_card, only: %i[ show edit update toggle_done move destroy ]
 
   def index
     @cards = @owner.cards
@@ -44,6 +44,16 @@ class CardsController < ApplicationController
 
   def toggle_done
     @card.update(done: !@card.done)
+    head :ok
+  end
+
+  def move
+    new_list = List.find(params[:list_id])
+    new_position = params[:position].to_i
+
+    @card.update(owner: new_list, position: new_position + 1)
+    @card.insert_at(new_position + 1)
+
     head :ok
   end
 
