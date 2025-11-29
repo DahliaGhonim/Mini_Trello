@@ -1,4 +1,3 @@
 class Card < ApplicationRecord
-  belongs_to :list, optional: true
-  belongs_to :user
+  belongs_to :owner, polymorphic: true
 end

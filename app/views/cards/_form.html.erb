@@ -1,4 +1,4 @@
-<%= form_with(model: [card.list.board, card.list, card], class: "contents") do |form| %>
+<%= form_with(model: [card.owner.board, card.owner, card], class: "contents") do |form| %>
   <% if card.errors.any? %>
     <div class="bg-red-50 text-red-500 px-3 py-2 rounded-md text-sm font-medium mt-2">
       <%= pluralize(card.errors.count, "error") %> prohibited this card from being saved:
