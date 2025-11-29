@@ -1,0 +1,15 @@
+<ul
+  data-controller="sortable"
+  data-sortable-resource-name-value="card"
+  data-sortable-animation-value="150"
+  data-sortable-group-value="cards"
+>
+  <% cards.each do |card| %>
+    <li
+      class="card group transition-all cursor-move p-3 -m-px"
+      data-sortable-update-url="<%= update_position_board_list_card_path(card.owner.board, card.owner, card) %>"
+    >
+      <%= render card %>
+    </li>
+  <% end %>
+</ul>

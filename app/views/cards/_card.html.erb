@@ -2,7 +2,7 @@
   <div id="<%= dom_id card %>" class="group rounded-lg bg-white p-3 shadow-sm hover:shadow transition-shadow">
     <div class="flex items-center gap-3">
       <%= form_with model: card,
-                    url: toggle_done_board_list_card_path(card.list.board, card.list, card),
+                    url: toggle_done_board_list_card_path(card.owner.board, card.owner, card),
                     method: :patch,
                     data: { turbo: true } do |f| %>
         <%= f.check_box :done,
@@ -17,7 +17,7 @@
         <%= card.title %>
       </span>
 
-      <%= button_to board_list_card_path(card.list.board, card.list, card),
+      <%= button_to board_list_card_path(card.owner.board, card.owner, card),
             method: :delete,
             data: { turbo_confirm: "Delete this card?" },
             class: "opacity-0 group-hover:opacity-100 transition-opacity
@@ -29,7 +29,7 @@
         </svg>
       <% end %>
 
-      <%= link_to edit_board_list_card_path(card.list.board, card.list, card),
+      <%= link_to edit_board_list_card_path(card.owner.board, card.owner, card),
             class: "opacity-0 group-hover:opacity-100 transition-opacity
                     p-1.5 rounded hover:bg-amber-50 text-amber-700
                     focus:outline-none focus:ring-2 focus:ring-amber-500" do %>
