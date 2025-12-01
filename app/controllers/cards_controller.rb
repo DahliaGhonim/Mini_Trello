@@ -1,14 +1,8 @@
 class CardsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_owner, only: %i[ index new create ]
-  before_action :set_card, only: %i[ show edit update toggle_done move destroy ]
+  before_action :set_owner, only: %i[ new create ]
+  before_action :set_card, only: %i[ edit update toggle_done move destroy ]
 
-  def index
-    @cards = @owner.cards
-  end
-
-  def show
-  end
 
   def new
     @card = @owner.cards.new

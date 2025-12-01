@@ -1,16 +1,8 @@
 class ListsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_list, only: %i[show edit update destroy]
-  before_action :set_board, only: %i[ index new create destroy ]
+  before_action :set_list, only: %i[ edit update destroy]
+  before_action :set_board, only: %i[ new create destroy ]
 
-  # GET /lists or /lists.json
-  def index
-    @lists = @board.lists.all
-  end
-
-  # GET /lists/1 or /lists/1.json
-  def show
-  end
 
   # GET /lists/new
   def new

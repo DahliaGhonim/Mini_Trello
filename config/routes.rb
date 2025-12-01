@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :cards
+  resources :cards, except: %i[ show index ]
 
   resources :boards do
-    resources :lists do
-      resources :cards do
+    resources :lists, except: %i[ show index ] do
+      resources :cards, except: %i[ show index ] do
         member do
           patch :toggle_done
           patch :move
