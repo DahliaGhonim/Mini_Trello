@@ -14,31 +14,24 @@ class ListsController < ApplicationController
   def create
     @list = @board.lists.new(list_params)
 
-    respond_to do |format|
-      if @list.save
-        redirect_to @board, notice: "List was successfully created."
-      else
-        render :new, status: :unprocessable_entity
-      end
+    if @list.save
+      redirect_to @board, notice: "List was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    respond_to do |format|
-      if @list.update(list_params)
-        redirect_to @list.board, notice: "List was successfully updated.", status: :see_other
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    if @list.update(list_params)
+      redirect_to @list.board, notice: "List was successfully updated.", status: :see_other
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @list.destroy!
-
-    respond_to do |format|
-      redirect_to board_path(@board), notice: "List was successfully destroyed.", status: :see_other
-    end
+    redirect_to board_path(@board), notice: "List was successfully destroyed.", status: :see_other
   end
 
   private

@@ -13,22 +13,18 @@ class CardsController < ApplicationController
   def create
     @card = @owner.cards.new(card_params)
 
-    respond_to do |format|
-      if @card.save
-        redirect_to @card.owner.board, notice: "Card was successfully created."
-      else
-        render :new, status: :unprocessable_entity
-      end
+    if @card.save
+      redirect_to @card.owner.board, notice: "Card was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    respond_to do |format|
-      if @card.update(card_params)
-        redirect_to @card.owner.board, notice: "Card was successfully updated.", status: :see_other
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    if @card.update(card_params)
+      redirect_to @card.owner.board, notice: "Card was successfully updated.", status: :see_other
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -50,10 +46,7 @@ class CardsController < ApplicationController
 
   def destroy
     @card.destroy!
-
-    respond_to do |format|
-      redirect_to @card.owner.board, notice: "Card was successfully destroyed.", status: :see_other
-    end
+    redirect_to @card.owner.board, notice: "Card was successfully destroyed.", status: :see_other
   end
 
   private
