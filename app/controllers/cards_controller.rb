@@ -15,11 +15,9 @@ class CardsController < ApplicationController
 
     respond_to do |format|
       if @card.save
-        format.html { redirect_to @card.owner.board, notice: "Card was successfully created." }
-        format.json { render :show, status: :created, location: @card }
+        redirect_to @card.owner.board, notice: "Card was successfully created."
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @card.errors, status: :unprocessable_entity }
+        render :new, status: :unprocessable_entity
       end
     end
   end
@@ -27,11 +25,9 @@ class CardsController < ApplicationController
   def update
     respond_to do |format|
       if @card.update(card_params)
-        format.html { redirect_to @card.owner.board, notice: "Card was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @card }
+        redirect_to @card.owner.board, notice: "Card was successfully updated.", status: :see_other
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @card.errors, status: :unprocessable_entity }
+        render :edit, status: :unprocessable_entity
       end
     end
   end
@@ -56,8 +52,7 @@ class CardsController < ApplicationController
     @card.destroy!
 
     respond_to do |format|
-      format.html { redirect_to @card.owner.board, notice: "Card was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+      redirect_to @card.owner.board, notice: "Card was successfully destroyed.", status: :see_other
     end
   end
 
