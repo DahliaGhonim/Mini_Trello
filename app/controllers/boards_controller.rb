@@ -18,11 +18,10 @@ class BoardsController < ApplicationController
 
   def create
     @board = current_user.boards.new(board_params)
+    @board.save
 
-    if @board.save
-      redirect_to @board, notice: "Board was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 

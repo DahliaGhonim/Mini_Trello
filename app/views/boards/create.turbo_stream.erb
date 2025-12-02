@@ -1,0 +1,14 @@
+<% if @board.errors.any? %>
+  <%= turbo_stream.replace "new_board" do %>
+    <%= turbo_frame_tag "new_board" do %>
+      <%= render "form", board: @board %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.append "boards" do %>
+    <%= render @board %>
+  <% end %>
+  <%= turbo_stream.replace "new_board" do %>
+    <%= render "boards/new_board", board: @board %>
+  <% end %>
+<% end %>
