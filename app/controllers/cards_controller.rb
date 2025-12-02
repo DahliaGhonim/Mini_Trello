@@ -10,13 +10,13 @@ class CardsController < ApplicationController
 
   def edit
   end
+
   def create
     @card = @owner.cards.new(card_params)
+    @card.save
 
-    if @card.save
-      redirect_to @card.owner.board, notice: "Card was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 
@@ -42,7 +42,6 @@ class CardsController < ApplicationController
 
     head :ok
   end
-
 
   def destroy
     @card.destroy!

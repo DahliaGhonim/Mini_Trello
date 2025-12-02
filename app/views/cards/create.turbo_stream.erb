@@ -1,0 +1,14 @@
+<% if @card.errors.any? %>
+  <%= turbo_stream.replace dom_id(@card.owner, :new_card) do %>
+    <%= turbo_frame_tag dom_id(@card.owner, :new_card) do %>
+      <%= render "cards/form", card: @card %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.append dom_id(@card.owner, :cards) do %>
+    <%= render @card %>
+  <% end %>
+  <%= turbo_stream.replace dom_id(@card.owner, :new_card) do %>
+    <%= render "lists/new_card", list: @card.owner %>
+  <% end %>
+<% end %>
