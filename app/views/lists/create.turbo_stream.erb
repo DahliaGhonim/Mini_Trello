@@ -6,9 +6,9 @@
   <% end %>
 <% else %>
   <%= turbo_stream.append dom_id(@list.board, :lists) do %>
-    <%= render "lists/list", list: @list %>
+    <%= render @list %>
   <% end %>
   <%= turbo_stream.replace dom_id(@list.board, :new_list) do %>
-    <%= render "boards/new_list", board: @list.board %>
+    <%= render "lists/new_list", board: @list.board %>
   <% end %>
 <% end %>
