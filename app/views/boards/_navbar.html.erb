@@ -1,7 +1,11 @@
 
-<nav class="rounded-lg border shadow-lg overflow-hidden p-2 bg-white border-stone-200 shadow-stone-950/5 mx-auto w-full max-w-screen-xl">
+<nav class="rounded-lg border shadow-lg overflow-hidden p-2 bg-white border-stone-200 shadow-stone-950/5 mx-auto w-full max-w-7xl">
   <div class="flex items-center font-sans antialiased text-sm text-current mx-2 py-1 font-semibold">
-    <%= link_to board.name, edit_board_path(board)%>
+
+    <%= turbo_frame_tag dom_id(board, :edit) do %>
+      <%= link_to board.name, edit_board_path(board)%>
+    <% end %>
+
     <div class="hidden lg:ml-auto lg:mr-2 lg:block">
       <ul class="m-2 flex flex-col gap-x-3 gap-y-1 lg:m-0 lg:flex-row lg:items-center">
         <li>
