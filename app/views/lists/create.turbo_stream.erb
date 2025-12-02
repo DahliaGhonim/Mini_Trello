@@ -1,0 +1,14 @@
+<% if @list.errors.any? %>
+  <%= turbo_stream.replace dom_id(@list.board, :new_list) do %>
+    <%= turbo_frame_tag dom_id(@list.board, :new_list) do %>
+      <%= render "form", list: @list %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.append dom_id(@list.board, :lists) do %>
+    <%= render "lists/list", list: @list %>
+  <% end %>
+  <%= turbo_stream.replace dom_id(@list.board, :new_list) do %>
+    <%= render "boards/new_list", board: @list.board %>
+  <% end %>
+<% end %>

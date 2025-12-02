@@ -13,11 +13,10 @@ class ListsController < ApplicationController
 
   def create
     @list = @board.lists.new(list_params)
+    @list.save
 
-    if @list.save
-      redirect_to @board, notice: "List was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 

@@ -9,18 +9,11 @@
     <div class="h-full overflow-x-auto overflow-y-hidden">
       <div class="inline-flex items-start gap-6 p-8 min-w-max h-full">
 
-        <div id="lists" class="flex gap-6 pt-4">
+        <div id="<%= dom_id(@board, :lists) %>" class="flex gap-6 pt-4">
           <%= render @board.lists %>
         </div>
 
-        <div class="pt-4">
-          <div class="shrink-0 w-80 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
-            <div class="p-4">
-              <%= link_to "+ Add a list", new_board_list_path(@board),
-                    class: "font-semibold text-gray-800 text-lg mb-4" %>
-            </div>
-          </div>
-        </div>
+        <%= render "boards/new_list", board: @board%>
 
       </div>
     </div>
