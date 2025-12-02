@@ -3,7 +3,7 @@
 <div class="md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">Editing list</h1>
 
-  <%= turbo_frame_tag "list" do %>
+  <%= turbo_frame_tag dom_id(@list, :edit) do %>
     <%= render "form", list: @list %>
   <% end %>
 </div>
