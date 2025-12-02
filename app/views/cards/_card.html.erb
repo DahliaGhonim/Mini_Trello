@@ -1,7 +1,11 @@
+<% url = card.owner_type == "User" ? toggle_done_card_path(card) : toggle_done_board_list_card_path(card.owner.board, card.owner, card) %>
+<% delete_path = card.owner_type == "User" ? card_path(card) : board_list_card_path(card.owner.board, card.owner, card) %>
+<% edit_path = card.owner_type == "User" ? edit_card_path(card) : edit_board_list_card_path(card.owner.board, card.owner, card) %>
+
 <div id="<%= dom_id card %>" class="group rounded-lg bg-white p-3 shadow-sm hover:shadow transition-shadow cursor-move mb-3">
   <div class="flex items-center gap-3">
     <%= form_with model: card,
-                  url: toggle_done_board_list_card_path(card.owner.board, card.owner, card),
+                  url: url,
                   method: :patch,
                   data: { turbo: true } do |f| %>
       <%= f.check_box :done,
@@ -16,7 +20,7 @@
       <%= card.title %>
     </span>
 
-    <%= button_to board_list_card_path(card.owner.board, card.owner, card),
+    <%= button_to delete_path,
           method: :delete,
           data: { turbo_confirm: "Delete this card?" },
           class: "opacity-0 group-hover:opacity-100 transition-opacity
@@ -29,7 +33,7 @@
       </svg>
     <% end %>
 
-    <%= link_to edit_board_list_card_path(card.owner.board, card.owner, card),
+    <%= link_to edit_path,
           class: "opacity-0 group-hover:opacity-100 transition-opacity
                   p-1.5 rounded hover:bg-amber-50 text-amber-700
                   focus:outline-none focus:ring-2 focus:ring-amber-500" do %>

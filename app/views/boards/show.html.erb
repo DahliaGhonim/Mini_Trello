@@ -1,3 +1,29 @@
+<div class="font-bold">
+  <div class="h-screen overflow-hidden bg-gray-100">
+    <div class="group shrink-0 w-80 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-gray-300 transition-all">
+
+      <div class="flex items-center justify-between p-4 pb-2">
+        <p class="font-semibold text-gray-800 text-lg flex-1 pr-2"> Inbox </p>
+      </div>
+
+      <div class="px-4"
+            data-controller="sortable"
+            data-sortable-group-value="cards"
+            data-sortable-animation-value="150"
+            id="<%= dom_id(current_user, :cards) %>"
+      >
+        <% current_user.cards.each do |card| %>
+          <%= turbo_frame_tag dom_id(card), data: { card_id: card.id } do %>
+            <%= render card %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <%= render "cards/new_card", user: current_user, owner: "User" %>
+    </div>
+  </div>
+</div>
+
 <%= render 'boards/navbar', board: @board %>
 
 <div class="font-bold">

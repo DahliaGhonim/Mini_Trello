@@ -6,9 +6,11 @@
   <% end %>
 <% else %>
   <%= turbo_stream.append dom_id(@card.owner, :cards) do %>
-    <%= render @card %>
+    <%= turbo_frame_tag dom_id(@card) do %>
+      <%= render @card %>
+    <% end %>
   <% end %>
   <%= turbo_stream.replace dom_id(@card.owner, :new_card) do %>
-    <%= render "cards/new_card", list: @card.owner %>
+    <%= render "cards/new_card", user: current_user, list: @card.owner, owner: @card.owner_type %>
   <% end %>
 <% end %>

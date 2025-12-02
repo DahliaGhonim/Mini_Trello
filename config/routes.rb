@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :cards, except: %i[ show index ]
+
+  resources :cards, except: %i[ show index ] do
+    member do
+      patch :toggle_done
+      patch :move
+    end
+  end
 
   resources :boards do
     resources :lists, except: %i[ show index ] do

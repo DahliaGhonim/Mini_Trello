@@ -21,11 +21,16 @@ class CardsController < ApplicationController
   end
 
   def update
-    if @card.update(card_params)
-      redirect_to @card.owner.board, notice: "Card was successfully updated.", status: :see_other
-    else
-      render :edit, status: :unprocessable_entity
+    @card.update(card_params)
+    respond_to do |format|
+      format.turbo_stream
     end
+
+    # if @card.update(card_params)
+    #   redirect_to @card.owner.board, notice: "Card was successfully updated.", status: :see_other
+    # else
+    #   render :edit, status: :unprocessable_entity
+    # end
   end
 
   def toggle_done
@@ -45,7 +50,10 @@ class CardsController < ApplicationController
 
   def destroy
     @card.destroy!
-    redirect_to @card.owner.board, notice: "Card was successfully destroyed.", status: :see_other
+
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
   private

@@ -1,0 +1,13 @@
+<% if @card.errors.any? %>
+  <%= turbo_stream.replace dom_id(@card) do %>
+    <%= turbo_frame_tag dom_id(@card) do %>
+      <%= render "cards/form", card: @card %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace @card do %>
+    <%= turbo_frame_tag dom_id(@card) do %>
+      <%= render @card %>
+    <% end %>
+  <% end %>
+<% end %>
