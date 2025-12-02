@@ -1,46 +1,44 @@
-<div class="font-bold">
-  <div class="h-screen overflow-hidden bg-gray-100">
-    <div class="group shrink-0 w-80 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-gray-300 transition-all">
+<div class="flex h-screen bg-gray-100">
+  <div class="w-80 shrink-0 bg-white border-r border-gray-200 flex flex-col">
+    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+      <p class="font-semibold text-gray-800 text-lg">Inbox</p>
+    </div>
 
-      <div class="flex items-center justify-between p-4 pb-2">
-        <p class="font-semibold text-gray-800 text-lg flex-1 pr-2"> Inbox </p>
-      </div>
-
-      <div class="px-4"
-            data-controller="sortable"
-            data-sortable-group-value="cards"
-            data-sortable-animation-value="150"
-            id="<%= dom_id(current_user, :cards) %>"
-      >
-        <% current_user.cards.each do |card| %>
-          <%= turbo_frame_tag dom_id(card), data: { card_id: card.id } do %>
-            <%= render card %>
-          <% end %>
-        <% end %>
-      </div>
-
+    <div class="px-4 pt-4 pb-3 border-b border-gray-100">
       <%= render "cards/new_card", user: current_user, owner: "User" %>
     </div>
+
+    <div class="flex-1 overflow-y-auto px-4 py-4"
+         data-controller="sortable"
+         data-sortable-group-value="cards"
+         data-sortable-animation-value="150"
+         id="<%= dom_id(current_user, :cards) %>">
+      <% current_user.cards.each do |card| %>
+        <%= turbo_frame_tag dom_id(card), data: { card_id: card.id } do %>
+              <%= render card %>
+        <% end %>
+      <% end %>
+    </div>
+
   </div>
-</div>
 
-<%= render 'boards/navbar', board: @board %>
+  <div class="flex-1 overflow-hidden flex flex-col">
+    <%= render 'boards/navbar', board: @board %>
 
-<div class="font-bold">
-  <div class="h-screen overflow-hidden bg-gray-100">
     <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" 
-            id="notice"><%= notice %></p>
+      <div class="px-8 pt-4">
+        <p class="py-2 px-4 bg-green-50 text-green-500 font-medium rounded-md inline-block" id="notice">
+          <%= notice %>
+        </p>
+      </div>
     <% end %>
-    <div class="h-full overflow-x-auto overflow-y-hidden">
-      <div class="inline-flex items-start gap-6 p-8 min-w-max h-full">
 
+    <div class="flex-1 overflow-x-auto overflow-y-hidden">
+      <div class="inline-flex items-start gap-6 p-8 min-w-max h-full">
         <div id="<%= dom_id(@board, :lists) %>" class="flex gap-6 pt-4">
           <%= render @board.lists %>
         </div>
-
-        <%= render "lists/new_list", board: @board%>
-
+        <%= render "lists/new_list", board: @board %>
       </div>
     </div>
   </div>
