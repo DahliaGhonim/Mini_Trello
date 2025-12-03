@@ -6,4 +6,20 @@
   <% end %>
 <% else %>
   <%= turbo_stream.replace @card %>
+
+  <%= turbo_stream.replace dom_id(@card, :title_modal) do %>
+    <%= turbo_frame_tag dom_id(@card, :title_modal) do %>
+      <% edit_path = @card.owner_type == "User" ? edit_card_path(@card) : edit_board_list_card_path(@card.owner.board, @card.owner, @card) %>
+      <%= link_to edit_path,
+            class: "flex-1 text-sm font-medium text-stone-800 hover:underline cursor-pointer" do %>
+        <%= @card.title %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if params[:card][:description] %>
+    <%= turbo_stream.replace dom_id(@card, :description) do %>
+      <%= render "cards/form_description", card: @card%>
+    <% end %>
+  <% end %>
 <% end %>

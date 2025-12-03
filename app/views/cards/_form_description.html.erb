@@ -1,0 +1,26 @@
+<%= turbo_frame_tag dom_id(card, :description) do %>
+  <% form_model = card.owner_type == "List" ? [card.owner.board, card.owner, card] : card %>
+  <%= form_with(model: form_model, class: "space-y-3") do |form| %>
+    <%= form.text_area :description,
+          placeholder: "Add a more detailed description...",
+          rows: 6,
+          class: "block w-full rounded-md border-gray-300 shadow-sm
+                  focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                  text-sm resize-none" %>
+
+    <div class="flex gap-2">
+      <%= form.submit "Save",
+            class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white
+                    font-medium text-sm rounded-md transition shadow-sm
+                    hover:shadow focus:outline-none focus:ring-2
+                    focus:ring-blue-500 focus:ring-offset-1" %>
+
+      <button type="button" 
+              data-action="click->modal#close"
+              class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700
+                      font-medium text-sm rounded-md transition">
+        Cancel
+      </button>
+    </div>
+  <% end %>
+<% end %>

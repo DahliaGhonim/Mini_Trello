@@ -1,8 +1,10 @@
 class CardsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_owner, only: %i[ new create ]
-  before_action :set_card, only: %i[ edit update toggle_done move destroy ]
+  before_action :set_card, only: %i[ show edit update toggle_done move destroy ]
 
+  def show
+  end
 
   def new
     @card = @owner.cards.new
@@ -29,7 +31,10 @@ class CardsController < ApplicationController
 
   def toggle_done
     @card.update(done: !@card.done)
-    head :ok
+
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
   def move
@@ -71,6 +76,6 @@ class CardsController < ApplicationController
   end
 
   def card_params
-    params.require(:card).permit(:title, :owner_id)
+    params.require(:card).permit(:title, :owner_id, :description, :done)
   end
 end

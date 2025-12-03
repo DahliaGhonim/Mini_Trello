@@ -1,0 +1,63 @@
+<%= turbo_frame_tag "modal" do %>
+  <div data-controller="modal"
+       data-action="keyup@window->modal#closeWithKeyboard"
+       class="fixed inset-0 z-50 overflow-y-auto flex items-start justify-center pt-16 px-4">
+
+    <div class="fixed inset-0 bg-black/30 transition-opacity"
+         data-action="click->modal#close"></div>
+
+    <div class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full mb-16">
+      <div class="flex items-start justify-between p-6 border-b border-gray-200">
+        <div class="flex items-center gap-3 flex-1">
+
+          <div class="flex items-center gap-3">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <% url = @card.owner_type == "User" ? toggle_done_card_path(@card) : toggle_done_board_list_card_path(@card.owner.board, @card.owner, @card) %>
+              <%= form_with model: @card, url: url, method: :patch, data: { turbo: true } do |f| %>
+                <%= f.check_box :done,
+                      checked: @card.done,
+                      class: "h-5 w-5 cursor-pointer rounded border-gray-300 text-stone-800
+                              focus:ring-2 focus:ring-stone-800 focus:ring-offset-0
+                              checked:bg-stone-800 checked:border-stone-800",
+                      onclick: "this.form.requestSubmit()" %>
+              <% end %>
+            </label>
+          </div>
+
+          <div class="flex-1" id="card-title-section">
+            <%= turbo_frame_tag dom_id(@card, :title_modal) do %>
+              <% edit_path = @card.owner_type == "User" ? edit_card_path(@card) : edit_board_list_card_path(@card.owner.board, @card.owner, @card) %>
+              <%= link_to edit_path,
+                    class: "flex-1 text-sm font-medium text-stone-800 hover:underline cursor-pointer" do %>
+                <%= @card.title %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+        <button type="button"
+                data-action="click->modal#close"
+                class="text-gray-400 hover:text-gray-600 rounded-lg p-1.5 ml-auto inline-flex items-center">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M4 6h16M4 12h16M4 18h7" />
+            </svg>
+            <h3 class="font-semibold text-gray-900">Description</h3>
+          </div>
+          <%= render "cards/form_description", card: @card%>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
