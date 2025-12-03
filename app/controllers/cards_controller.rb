@@ -33,10 +33,15 @@ class CardsController < ApplicationController
   end
 
   def move
-    new_list = List.find(params[:list_id])
     new_position = params[:position].to_i
 
-    @card.update(owner: new_list, position: new_position + 1)
+    if params[:list_id]
+      new_owner = List.find(params[:list_id])
+    elsif params[:user_id]
+      new_owner = User.find(params[:user_id])
+    end
+
+    @card.update(owner: new_owner, position: new_position + 1)
     @card.insert_at(new_position + 1)
 
     head :ok

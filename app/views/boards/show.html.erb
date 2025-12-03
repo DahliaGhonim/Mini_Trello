@@ -12,6 +12,8 @@
          data-controller="sortable"
          data-sortable-group-value="cards"
          data-sortable-animation-value="150"
+         data-user-id="<%= current_user.id %>"
+         data-board-id="<%= @board.id %>"
          id="<%= dom_id(current_user, :cards) %>">
       <% current_user.cards.each do |card| %>
           <%= render card %>

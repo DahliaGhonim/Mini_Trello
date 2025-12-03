@@ -24,18 +24,34 @@ export default class extends Controller {
 
   async onEnd(event) {
     const cardId = event.item.dataset.cardId
-    const newListId = event.to.dataset.listId
-    const boardId = event.to.dataset.boardId
     const newPosition = event.newIndex
+    const newListId = event.to.dataset.listId
+    const newUserId = event.to.dataset.userId
+    const boardId = event.to.dataset.boardId
 
-    const url = `/boards/${boardId}/lists/${newListId}/cards/${cardId}/move`
-
+    let url
+    let body
+    
+    if (newListId && boardId) {
+      url = `/boards/${boardId}/lists/${newListId}/cards/${cardId}/move`
+      body = {
+        list_id: newListId,
+        position: newPosition
+      }
+    } else if (newUserId) {
+      url = `/cards/${cardId}/move`
+      body = {
+        user_id: newUserId,
+        position: newPosition
+      }
+    } else {
+      console.error("Unable to determine destination for card move")
+      return
+    }
+    
     try {
       await patch(url, {
-        body: JSON.stringify({
-          list_id: newListId,
-          position: newPosition
-        }),
+        body: JSON.stringify(body),
         contentType: "application/json",
         responseKind: "json"
       })
