@@ -5,9 +5,5 @@
     <% end %>
   <% end %>
 <% else %>
-  <%= turbo_stream.replace @card do %>
-    <%= turbo_frame_tag dom_id(@card) do %>
-      <%= render @card %>
-    <% end %>
-  <% end %>
+  <%= turbo_stream.replace @card %>
 <% end %>
