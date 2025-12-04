@@ -1,20 +1,15 @@
 <% content_for :title, "Boards" %>
 
 <div class="font-bold">
-  <div class="h-screen overflow-hidden bg-gray-100">
+  <div class="min-h-screen bg-gray-100 py-8 px-8">
     <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" 
-            id="notice"><%= notice %></p>
+      <p class="py-2 px-4 bg-green-50 mb-6 text-green-600 font-medium rounded-lg inline-block" 
+         id="notice"><%= notice %></p>
     <% end %>
-    <div class="h-full overflow-x-auto overflow-y-hidden">
-      <div class="inline-flex items-start gap-6 p-8 min-w-max h-full">
-
-        <div id="boards" class="flex gap-6 pt-4">
-          <%= render @boards %>
-        </div>
-
-        <%= render "boards/new_board" %>
-
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+      <%= render "boards/new_board" %>
+      <div id="boards" class="contents">
+        <%= render @boards %>
       </div>
     </div>
   </div>
