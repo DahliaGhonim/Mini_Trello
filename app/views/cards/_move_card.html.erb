@@ -1,0 +1,110 @@
+<div data-controller="move-card"
+     data-move-card-card-id-value="<%= card.id %>"
+     data-move-card-user-id-value="<%= current_user.id %>"
+     class="relative">
+  <% owner = card.owner_type == "User" ? "IN YOUR INBOX" : card.owner.name %>
+  <button type="button"
+          data-action="click->move-card#openMoveModal"
+          class="w-full flex items-center justify-between px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-300 transition cursor-pointer">
+    <div class="flex items-center gap-2">
+      <svg class="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      </svg>
+      <span class="font-medium text-gray-700"><%= owner %></span>
+    </div>
+    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <div data-move-card-target="moveModal"
+        class="hidden fixed inset-0 z-[60] overflow-y-auto flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/50"
+          data-action="click->move-card#closeMoveModal"></div>
+    
+    <div class="relative bg-white rounded-lg shadow-2xl max-w-md w-full p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">Move Card</h3>
+        <button type="button"
+                data-action="click->move-card#closeMoveModal"
+                class="text-gray-400 hover:text-gray-600 cursor-pointer">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form data-action="submit->move-card#moveCard" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Move to</label>
+          <select data-move-card-target="destinationType"
+                  data-action="change->move-card#updateDestination"
+                  class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 cursor-pointer">
+            <option value="board">Board</option>
+            <option value="inbox">Inbox</option>
+          </select>
+        </div>
+
+        <div data-move-card-target="inboxSection" class="hidden space-y-4">
+          <div>
+            <% positions = current_user.cards.count + 1 %>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Position</label>
+            <select data-move-card-target="inboxPositionSelect"
+                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 cursor-pointer">
+              <option value="">Select position</option>
+              <% (1..positions).each do |position| %>
+                <option value="<%= position %>"><%= position %></option>
+              <% end %>
+            </select>
+          </div>
+        </div>
+
+        <div data-move-card-target="boardSection" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Board</label>
+            <select data-move-card-target="boardSelect"
+                    data-action="change->move-card#updateListsForBoard"
+                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 cursor-pointer">
+              <option value="">Select a board</option>
+              <% current_user.boards.each do |board| %>
+                <option value="<%= board.id %>"><%= board.name %></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">List</label>
+            <select data-move-card-target="listSelect"
+                    data-action="change->move-card#updatePositionsForList"
+                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 cursor-pointer">
+              <option value="">Select a list</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Position</label>
+            <select data-move-card-target="listPositionSelect"
+                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 cursor-pointer">
+              <option value="">Select position</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-4">
+          <button type="submit"
+                  class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition cursor-pointer">
+            Move
+          </button>
+          <button type="button"
+                  data-action="click->move-card#closeMoveModal"
+                  class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-md transition cursor-pointer">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

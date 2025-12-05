@@ -1,8 +1,12 @@
 class ListsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_list, only: %i[ edit update destroy]
-  before_action :set_board, only: %i[ new create destroy ]
+  before_action :set_board
+  before_action :set_list, only: %i[ edit update destroy cards_count ]
 
+  def index
+    lists = @board.lists.select(:id, :name)
+    render json: lists
+  end
 
   def new
     @list = @board.lists.new
@@ -33,18 +37,21 @@ class ListsController < ApplicationController
     redirect_to board_path(@board), notice: "List was successfully destroyed.", status: :see_other
   end
 
+  def cards_count
+    count = @list.cards.count
+    render json: { count: count }
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_list
-      @list = List.find(params.expect(:id))
-    end
+  def set_list
+    @list = @board.lists.find(params.expect(:id))
+  end
 
-    def set_board
-      @board = Board.find(params.expect(:board_id))
-    end
+  def set_board
+    @board = Board.find(params.expect(:board_id))
+  end
 
-    # Only allow a list of trusted parameters through.
-    def list_params
+  def list_params
       params.expect(list: [ :board_id, :name ])
-    end
+  end
 end

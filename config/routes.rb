@@ -9,7 +9,11 @@ Rails.application.routes.draw do
   end
 
   resources :boards do
-    resources :lists, except: %i[ show index ] do
+    resources :lists, except: %i[ show ] do
+      member do
+        get :cards_count
+      end
+
       resources :cards, except: %i[ index ] do
         member do
           patch :toggle_done

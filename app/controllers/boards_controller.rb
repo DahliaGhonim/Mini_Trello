@@ -39,11 +39,11 @@ class BoardsController < ApplicationController
   end
 
   private
-    def set_board
+  def set_board
       @board = current_user.boards.find(params.expect(:id))
-    end
+  end
 
-    def board_params
+  def board_params
       params.expect(board: [ :user_id, :name ])
-    end
+  end
 end
