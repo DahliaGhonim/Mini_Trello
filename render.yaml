@@ -1,0 +1,25 @@
+databases:
+  - name: mini-trello-db
+    databaseName: mini_trello
+    user: mini_trello_user
+    ipAllowList: []
+
+services:
+  - type: web
+    name: mini-trello
+    runtime: ruby
+    env: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec rails server -b 0.0.0.0 -p $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mini-trello-db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: RAILS_ENV
+        value: production
+      - key: WEB_CONCURRENCY
+        value: 2
+    healthCheckPath: /up
