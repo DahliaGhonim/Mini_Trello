@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  resources :users, only: [] do
+    member do
+      get :cards_count
+    end
+  end
+
   resources :cards, except: %i[ index ] do
     member do
       patch :toggle_done
@@ -9,7 +15,15 @@ Rails.application.routes.draw do
   end
 
   resources :boards do
+    member do
+      get "lists", to: "boards#lists_json", defaults: { format: :json }
+    end
+
     resources :lists, except: %i[ show index ] do
+      member do
+        get :cards_count
+      end
+
       resources :cards, except: %i[ index ] do
         member do
           patch :toggle_done
