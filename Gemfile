@@ -74,3 +74,5 @@ end
 gem "devise", "~> 4.9"
 
 gem "acts_as_list", "~> 1.2"
+
+gem "pg", "~> 1.6"
